@@ -88,7 +88,7 @@
     <label for="investment">Investment Amount (₹10,000 – ₹10,00,000)</label>
     <div class="slider-row">
       <input type="range" id="investment" min="10000" max="1000000" step="10000" value="100000" oninput="syncInputs('investment')">
-      <input type="number" id="investmentInput" min="10000" max="1000000" step="10000" value="100000" oninput="syncSliders('investment')">
+      <input type="number" id="investmentInput" min="10000" max="1000000" step="1" value="100000" oninput="syncSliders('investment')">
     </div>
   </div>
 
@@ -103,8 +103,8 @@
   <div class="form-group">
     <label for="interest">Interest Rate (Annual %)</label>
     <div class="slider-row">
-      <input type="range" id="interest" min="1" max="15" step="0.1" value="5" oninput="syncInputs('interest')">
-      <input type="number" id="interestInput" min="1" max="15" step="0.1" value="5" oninput="syncSliders('interest')">
+      <input type="range" id="interest" min="1" max="15" step="0.01" value="5" oninput="syncInputs('interest')">
+      <input type="number" id="interestInput" min="1" max="15" step="0.01" value="5" oninput="syncSliders('interest')">
     </div>
   </div>
 
