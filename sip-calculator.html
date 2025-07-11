@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SIP Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f7faff;
+      padding: 30px;
+      color: #333;
+    }
+    .calculator {
+      max-width: 650px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.08);
+      padding: 30px;
+      margin: auto;
+    }
+    .calculator h2 {
+      text-align: center;
+      color: #004085;
+      margin-bottom: 28px;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    input[type=range] {
+      flex: 1;
+    }
+    input[type=number] {
+      width: 140px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-align: right;
+    }
+    .result {
+      background: #e9f5ff;
+      border-left: 4px solid #007bff;
+      padding: 18px;
+      margin-top: 30px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    .result p {
+      margin: 10px 0;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #004085;
+    }
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      background-color: #f1f1f1;
+      color: #555;
+      border-top: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<div class="calculator">
+  <h2>SIP Calculator</h2>
+
+  <div class="form-group">
+    <label>Monthly SIP (₹)</label>
+    <div class="slider-row">
+      <input type="range" id="monthly" min="500" max="100000" step="500" value="5000" oninput="syncInputs('monthly')">
+      <input type="number" id="monthlyInput" min="500" max="100000" step="500" value="5000" oninput="syncSliders('monthly')">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Investment Duration (Years)</label>
+    <div class="slider-row">
+      <input type="range" id="years" min="1" max="40" step="1" value="10" oninput="syncInputs('years')">
+      <input type="number" id="yearsInput" min="1" max="40" step="1" value="10" oninput="syncSliders('years')">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Expected Annual Return (%)</label>
+    <div class="slider-row">
+      <input type="range" id="return" min="1" max="30" step="0.1" value="12" oninput="syncInputs('return')">
+      <input type="number" id="returnInput" min="1" max="30" step="0.1" value="12" oninput="syncSliders('return')">
+    </div>
+  </div>
+
+  <div class="result">
+    <p><span class="highlight">Total Invested:</span> ₹<span id="invested">0</span></p>
+    <p><span class="highlight">Wealth Gained:</span> ₹<span id="gain">0</span></p>
+    <p><span class="highlight">Maturity Value:</span> ₹<span id="maturity">0</span></p>
+  </div>
+</div>
+
+<footer>
+  © 2025 Your Company | <a href="https://yourwebsite.com" style="color:#007bff; text-decoration: none;">yourwebsite.com</a>
+</footer>
+
+<script>
+  function syncInputs(id) {
+    const range = document.getElementById(id);
+    const input = document.getElementById(id + "Input");
+    input.value = range.value;
+    calculateSIP();
+  }
+
+  function syncSliders(id) {
+    const input = document.getElementById(id + "Input");
+    const range = document.getElementById(id);
+    let value = parseFloat(input.value);
+
+    // Clamp values
+    value = Math.max(parseFloat(range.min), Math.min(parseFloat(range.max), value));
+
+    range.value = value;
+    input.value = value;
+    calculateSIP();
+  }
+
+  function calculateSIP() {
+    const monthly = parseFloat(document.getElementById("monthly").value);
+    const years = parseFloat(document.getElementById("years").value);
+    const rate = parseFloat(document.getElementById("return").value);
+
+    const months = years * 12;
+    const monthlyRate = rate / 12 / 100;
+
+    const maturity = monthly * ((Math.pow(1 + monthlyRate, months) - 1) * (1 + monthlyRate)) / monthlyRate;
+    const invested = monthly * months;
+    const gain = maturity - invested;
+
+    document.getElementById("invested").innerText = invested.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    document.getElementById("gain").innerText = gain.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    document.getElementById("maturity").innerText = maturity.toLocaleString(undefined, { maximumFractionDigits: 0 });
+  }
+
+  window.onload = calculateSIP;
+</script>
+
+</body>
+</html>
